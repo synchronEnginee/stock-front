@@ -10,7 +10,10 @@
 			"extensions": [
 				"dbaeumer.vscode-eslint",
 				"oderwat.indent-rainbow",
-				"esbenp.prettier-vscode"
+				"esbenp.prettier-vscode",
+				"burkeholland.simple-react-snippets",
+				"infeng.vscode-react-typescript",
+				"steoates.autoimport"
 			]
 		}
 	}
