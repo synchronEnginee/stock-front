@@ -1,0 +1,17 @@
+{
+    "name": "node",
+    "dockerComposeFile": "../docker-compose.yaml",
+    "service": "front",
+    "workspaceFolder": "/usr/app/stock-front",
+    "postCreateCommand": "apk update && apk add git",
+	"shutdownAction": "stopCompose",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"oderwat.indent-rainbow",
+				"esbenp.prettier-vscode"
+			]
+		}
+	}
+  }
