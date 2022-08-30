@@ -48,8 +48,8 @@ const Layout = () => {
           <DrawerBody>
             <List spacing={3}>
               <ListItem>
-                <Link to="/list">
-                  <Button colorScheme="blue">銘柄一覧</Button>
+                <Link to="/fallstock">
+                  <Button colorScheme="blue">下落率順</Button>
                 </Link>
               </ListItem>
               <ListItem>
