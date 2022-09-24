@@ -33,6 +33,8 @@
               "unnamedComponents": "arrow-function"
             }
           ],
-        "@typescript-eslint/explicit-function-return-type": "off"
+        "@typescript-eslint/explicit-function-return-type": "off",
+        // 型定義をtypeで統一
+        "@typescript-eslint/consistent-type-definitions": ["error", "type"]
     }
 }

@@ -13,7 +13,8 @@
 				"esbenp.prettier-vscode",
 				"burkeholland.simple-react-snippets",
 				"infeng.vscode-react-typescript",
-				"steoates.autoimport"
+				"steoates.autoimport",
+				"eamodio.gitlens"
 			]
 		}
 	}
