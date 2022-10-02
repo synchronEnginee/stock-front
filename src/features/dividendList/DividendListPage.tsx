@@ -16,6 +16,27 @@ import {
   RowData,
 } from '@tanstack/react-table';
 
+import {
+  Table as ChakraTable,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Input,
+  Select,
+  IconButton,
+  Button,
+  chakra,
+  TabsDescendantsProvider,
+} from '@chakra-ui/react';
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from '@chakra-ui/icons';
+
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface TableMeta<TData extends RowData> {
@@ -144,13 +165,13 @@ const DividendListPage = (props: Props) => {
   return (
     <div className="p-2">
       <div className="h-2" />
-      <table>
-        <thead>
+      <ChakraTable>
+        <Thead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
+            <Tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <th key={header.id} colSpan={header.colSpan}>
+                  <Th key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder ? null : (
                       <div>
                         {flexRender(
@@ -164,60 +185,60 @@ const DividendListPage = (props: Props) => {
                         ) : null}
                       </div>
                     )}
-                  </th>
+                  </Th>
                 );
               })}
-            </tr>
+            </Tr>
           ))}
-        </thead>
-        <tbody>
+        </Thead>
+        <Tbody>
           {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={row.id}>
+              <Tr key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   return (
-                    <td key={cell.id}>
+                    <Td key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
-                    </td>
+                    </Td>
                   );
                 })}
-              </tr>
+              </Tr>
             );
           })}
-        </tbody>
-      </table>
+        </Tbody>
+      </ChakraTable>
       <div className="h-2" />
       <div className="flex items-center gap-2">
-        <button
+        <IconButton
           className="border rounded p-1"
           onClick={() => table.setPageIndex(0)}
           disabled={!table.getCanPreviousPage()}
-        >
-          {'<<'}
-        </button>
+          aria-label="Call Sage"
+          icon={<ArrowLeftIcon />}
+        />
         <button
           className="border rounded p-1"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          {'<'}
+          <ChevronLeftIcon />
         </button>
         <button
           className="border rounded p-1"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          {'>'}
+          <ChevronRightIcon />
         </button>
         <button
           className="border rounded p-1"
           onClick={() => table.setPageIndex(table.getPageCount() - 1)}
           disabled={!table.getCanNextPage()}
         >
-          {'>>'}
+          <ArrowRightIcon />
         </button>
         <span className="flex items-center gap-1">
           <div>Page</div>
@@ -273,7 +294,7 @@ const Filter = ({
 
   return typeof firstValue === 'number' ? (
     <div className="flex space-x-2">
-      <input
+      <Input
         type="number"
         value={(columnFilterValue as [number, number])?.[0] ?? ''}
         onChange={(e) =>
@@ -285,7 +306,7 @@ const Filter = ({
         placeholder={`Min`}
         className="w-24 border shadow rounded"
       />
-      <input
+      <Input
         type="number"
         value={(columnFilterValue as [number, number])?.[1] ?? ''}
         onChange={(e) =>
@@ -299,7 +320,7 @@ const Filter = ({
       />
     </div>
   ) : (
-    <input
+    <Input
       type="text"
       value={(columnFilterValue ?? '') as string}
       onChange={(e) => column.setFilterValue(e.target.value)}
