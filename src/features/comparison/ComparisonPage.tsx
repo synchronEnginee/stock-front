@@ -3,23 +3,21 @@ import React, { useState, useRef } from 'react';
 import { css } from '@emotion/react';
 import { Link } from 'react-router-dom';
 
+import { ComparisonStockInfo } from './type/type';
 import useStockInfoStore, {
   StockInfoStore,
 } from '../../hooks/useStockInfoStore';
 import StockInfoStoreProvider, {
   StockInfoContext,
 } from '../../hooks/StockInfoStoreProvider';
-import ComparisonStock, {
-  ComparisonStockInfo,
-} from './components/ComparisonStock';
+import ComparisonStock from './components/ComparisonStock';
 import ComparisonChart from './components/ComparisonChart';
+import { useQuery } from 'react-query';
 
 // チャートコンポーネントに渡す用の値管理
 // キーのcodeは銘柄コード
 export type StocksInfoForChartStore = StockInfoStore<ComparisonStockInfo>;
 
-// TODO:比較チャートを表示するページへ変更
-// 機能的にrechart.js予定
 const styles = css({
   width: '60%',
   height: '100%',
@@ -37,9 +35,7 @@ const styles = css({
   },
 });
 
-// compareStockInfo
-// export const StocksInfoContext = createContext({});
-
+// @TODO:react-queryへstoreを変更する
 const ComparisonPage = () => {
   // リスト表示・グラフ切替
   const [isList, setIsList] = useState(true);
@@ -60,7 +56,9 @@ const ComparisonPage = () => {
         new Set([...Array.from(prevCodeList), parseInt(input.value, 10)]),
     );
   };
-  console.log('ComparisonPageのレンダリング');
+
+  const {data} = useQuery(['CompareStockInfo', codeList], () => )
+  
   return (
     <>
       <Link to="/">トップへ</Link>

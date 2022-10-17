@@ -3,6 +3,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { css } from '@emotion/react';
 import { useErrorHandler } from 'react-error-boundary';
+
+import { ComparisonStockInfo } from '../type/type';
 import { OperateStockInfoStore } from '../../../hooks/useStockInfoStore';
 import { OperateStockInfoContext } from '../../../hooks/StockInfoStoreProvider';
 
@@ -11,16 +13,6 @@ const stockUrl = 'http://127.0.0.1:5000/compare/';
 // 項目に欠けがあった場合でもエラーが出るよう外部で定義
 type StockGetResponse = AxiosResponse & {
   data: ComparisonStockInfo;
-};
-
-// TODO: numberを4桁のリテラル型にする
-// typesファイルに切り出す
-export type ComparisonStockInfo = {
-  name: string;
-  per: number;
-  pbr: number;
-  dividendYield: number;
-  dividendPayoutRatio: number;
 };
 
 export type ComparisonStockProps = {
