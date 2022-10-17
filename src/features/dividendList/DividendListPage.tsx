@@ -28,9 +28,7 @@ import {
   IconButton,
   Button,
   chakra,
-  TabsDescendantsProvider,
   Box,
-  ChakraProvider,
 } from '@chakra-ui/react';
 import {
   ChevronLeftIcon,
@@ -165,127 +163,125 @@ const DividendListPage = (props: Props) => {
     debugTable: true,
   });
   return (
-    <ChakraProvider>
-      <div className="p-2">
-        <div className="h-2" />
-        <ChakraTable>
-          <Thead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <Tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
+    <div className="p-2">
+      <div className="h-2" />
+      <ChakraTable>
+        <Thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <Th key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder ? null : (
+                      <div>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {header.column.getCanFilter() ? (
+                          <div>
+                            <Filter column={header.column} table={table} />
+                          </div>
+                        ) : null}
+                      </div>
+                    )}
+                  </Th>
+                );
+              })}
+            </Tr>
+          ))}
+        </Thead>
+        <Tbody>
+          {table.getRowModel().rows.map((row) => {
+            return (
+              <Tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
                   return (
-                    <Th key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder ? null : (
-                        <div>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {header.column.getCanFilter() ? (
-                            <div>
-                              <Filter column={header.column} table={table} />
-                            </div>
-                          ) : null}
-                        </div>
+                    <Td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
                       )}
-                    </Th>
+                    </Td>
                   );
                 })}
               </Tr>
-            ))}
-          </Thead>
-          <Tbody>
-            {table.getRowModel().rows.map((row) => {
-              return (
-                <Tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <Td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </Td>
-                    );
-                  })}
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </ChakraTable>
-        <div className="h-2" />
-        <div className="flex items-center gap-2">
-          <Box>
-            <IconButton
-              // className="border rounded p-1"
-              onClick={() => table.setPageIndex(0)}
-              // disabled={!table.getCanPreviousPage()}
-              aria-label="backAll"
-              icon={<ArrowLeftIcon />}
-            />
+            );
+          })}
+        </Tbody>
+      </ChakraTable>
+      <div className="h-2" />
+      <div className="flex items-center gap-2">
+        <Box>
+          <IconButton
+            // className="border rounded p-1"
+            onClick={() => table.setPageIndex(0)}
+            // disabled={!table.getCanPreviousPage()}
+            aria-label="backAll"
+            icon={<ArrowLeftIcon />}
+          />
 
-            <IconButton
-              // className="border rounded p-1"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              aria-label="back1"
-              icon={<ChevronLeftIcon w={8} h={8} />}
-            />
+          <IconButton
+            // className="border rounded p-1"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            aria-label="back1"
+            icon={<ChevronLeftIcon w={8} h={8} />}
+          />
 
-            <IconButton
-              // className="border rounded p-1"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              aria-label="next1"
-              icon={<ChevronRightIcon w={8} h={8} />}
-            />
+          <IconButton
+            // className="border rounded p-1"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            aria-label="next1"
+            icon={<ChevronRightIcon w={8} h={8} />}
+          />
 
-            <IconButton
-              // className="border rounded p-1"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-              aria-label="nextAll"
-              icon={<ArrowRightIcon w={8} h={8} />}
-            />
-          </Box>
-          <span className="flex items-center gap-1">
-            <div>Page</div>
-            <strong>
-              {table.getState().pagination.pageIndex + 1} of{' '}
-              {table.getPageCount()}
-            </strong>
-          </span>
-          <span className="flex items-center gap-1">
-            | Go to page:
-            <input
-              type="number"
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-              className="border p-1 rounded w-16"
-            />
-          </span>
-          <select
-            value={table.getState().pagination.pageSize}
+          <IconButton
+            // className="border rounded p-1"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+            aria-label="nextAll"
+            icon={<ArrowRightIcon w={8} h={8} />}
+          />
+        </Box>
+        <span className="flex items-center gap-1">
+          <div>Page</div>
+          <strong>
+            {table.getState().pagination.pageIndex + 1} of{' '}
+            {table.getPageCount()}
+          </strong>
+        </span>
+        <span className="flex items-center gap-1">
+          | Go to page:
+          <input
+            type="number"
+            defaultValue={table.getState().pagination.pageIndex + 1}
             onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
+              const page = e.target.value ? Number(e.target.value) - 1 : 0;
+              table.setPageIndex(page);
             }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>{table.getRowModel().rows.length} Rows</div>
-        <div>
-          <button onClick={() => rerender()}>Force Rerender</button>
-        </div>
+            className="border p-1 rounded w-16"
+          />
+        </span>
+        <select
+          value={table.getState().pagination.pageSize}
+          onChange={(e) => {
+            table.setPageSize(Number(e.target.value));
+          }}
+        >
+          {[10, 20, 30, 40, 50].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
       </div>
-    </ChakraProvider>
+      <div>{table.getRowModel().rows.length} Rows</div>
+      <div>
+        <button onClick={() => rerender()}>Force Rerender</button>
+      </div>
+    </div>
   );
 };
 const Filter = ({
