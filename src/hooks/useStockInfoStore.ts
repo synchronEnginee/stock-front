@@ -24,7 +24,6 @@ const useStockInfoStore = <T extends object>() => {
   const stockInfoStore = useRef<StockInfoStore<T>>({}).current;
   const addStockInfoStore = useCallback(
     (code: string, stockInfo: T) => {
-      console.log('addStockInfoStore実行');
       stockInfoStore[code] = stockInfo;
     },
     [stockInfoStore],

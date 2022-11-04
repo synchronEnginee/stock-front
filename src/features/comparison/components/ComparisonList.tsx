@@ -1,8 +1,10 @@
+/** @jsxImportSource @emotion/react */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { css } from '@emotion/react';
 
 import {
   Column,
@@ -34,6 +36,8 @@ import {
   ArrowRightIcon,
 } from '@chakra-ui/icons';
 
+import { ComparisonStockInfo } from '../type/type';
+
 declare module '@tanstack/react-table' {
   // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface TableMeta<TData extends RowData> {
@@ -41,15 +45,17 @@ declare module '@tanstack/react-table' {
   }
 }
 
-type DividendData = {
-  stockName: string;
-  income: number;
-  dividendDate: string;
+const styles = css({
+  p: {
+    fontSize: 26,
+  },
+});
+
+type ComparisonProps = {
+  stockData: ComparisonStockInfo[];
 };
 
-type Props = {};
-
-const defaultColumn: Partial<ColumnDef<DividendData>> = {
+const defaultColumn: Partial<ColumnDef<ComparisonStockInfo>> = {
   cell: ({ getValue, row: { index }, column: { id }, table }) => {
     const initialValue = getValue();
     // We need to keep and update the state of the cell normally
@@ -143,29 +149,49 @@ const useSkipper = () => {
   return [shouldSkip, skip] as const;
 };
 
-const DividendListPage = (props: Props) => {
+// 株の数が増えるとレンダリングコストが増えるのでメモ化
+/**
+ * 株比較のための1行データ
+ * @param props
+ * @returns
+ */
+const ComparisonList = (props: ComparisonProps) => {
+  const { stockData } = props;
   const rerender = React.useReducer(() => ({}), {})[1];
 
+  // テーブルに渡すデータ（とりあえず固定値）
+  const [data, setData] = React.useState<ComparisonStockInfo[]>(stockData);
+
   // カラム定義
-  const columns = React.useMemo<Array<ColumnDef<DividendData>>>(
+  const columns = React.useMemo<Array<ColumnDef<ComparisonStockInfo>>>(
     () => [
       {
-        header: '配当受け取り履歴',
+        header: '銘柄リスト',
         footer: (props) => props.column.id,
         columns: [
           {
-            accessorKey: 'stockName',
+            accessorKey: 'name',
             header: () => <span>銘柄</span>,
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: 'dividendDate',
-            header: () => <span>配当受領月</span>,
+            accessorKey: 'per',
+            header: () => <span>PER</span>,
             footer: (props) => props.column.id,
           },
           {
-            accessorKey: 'income',
-            header: () => <span>配当金</span>,
+            accessorKey: 'pbr',
+            header: () => <span>PBR</span>,
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'dividendYield',
+            header: () => <span>配当利回り</span>,
+            footer: (props) => props.column.id,
+          },
+          {
+            accessorKey: 'dividendPayoutRatio',
+            header: () => <span>配当性向</span>,
             footer: (props) => props.column.id,
           },
         ],
@@ -173,11 +199,6 @@ const DividendListPage = (props: Props) => {
     ],
     [],
   );
-  // テーブルに渡すデータ（とりあえず固定値）
-  const [data, setData] = React.useState<DividendData[]>([
-    { stockName: 'aaa', dividendDate: '2022-05', income: 10000 },
-    { stockName: 'あああ', dividendDate: '2022-06', income: 9000 },
-  ]);
 
   const [autoResetPageIndex, skipAutoResetPageIndex] = useSkipper();
 
@@ -191,7 +212,7 @@ const DividendListPage = (props: Props) => {
     autoResetPageIndex,
     // Provide our updateData function to our table meta
     meta: {
-      updateData: (rowIndex, columnId, value) => {
+      updateData: (rowIndex: number, columnId: string, value: unknown) => {
         // Skip age index reset until after next rerender
         skipAutoResetPageIndex();
         setData((old) =>
@@ -210,6 +231,11 @@ const DividendListPage = (props: Props) => {
     },
     debugTable: true,
   });
+
+  useEffect(() => {
+    setData(stockData);
+  }, [stockData]);
+
   return (
     <div className="p-2">
       <div className="h-2" />
@@ -333,4 +359,4 @@ const DividendListPage = (props: Props) => {
   );
 };
 
-export default DividendListPage;
+export default ComparisonList;

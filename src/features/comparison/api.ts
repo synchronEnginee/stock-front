@@ -14,7 +14,7 @@ export const fetchComparison = async () => {
     method: 'GET',
   };
   const data = await axios(options)
-    .then((res: AxiosResponse<ComparisonStockInfo>) => res.data)
+    .then((res: AxiosResponse<ComparisonStockInfo[]>) => res.data)
     .catch((e: AxiosError<{ error: string }>) => {
       console.log(`比較データ取得でエラーが発生しました：${e.message}`);
       throw e;
