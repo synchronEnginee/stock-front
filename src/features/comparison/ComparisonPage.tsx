@@ -7,8 +7,6 @@ import { ComparisonStockInfo } from './type/type';
 import useCodeList from '../../hooks/useCodeList';
 import { StockInfoStore } from '../../hooks/useStockInfoStore';
 import ComparisonStock from './components/ComparisonStock';
-import { useQuery } from 'react-query';
-import { fetchComparison } from './api';
 
 // チャートコンポーネントに渡す用の値管理
 // キーのcodeは銘柄コード
@@ -43,10 +41,10 @@ const ComparisonPage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const addCode = () => {
-    if (inputRef.current) addCodeList(parseInt(inputRef.current.value, 10));
+    if (inputRef.current != null) {
+      addCodeList(parseInt(inputRef.current.value, 10));
+    }
   };
-
-  const { data } = useQuery(['CompareStockInfo', codeList], fetchComparison);
 
   return (
     <>
@@ -55,12 +53,7 @@ const ComparisonPage = () => {
       <ComparisonStock codeList={codeList} isChart={isChart} />
       <div>
         <input ref={inputRef} type="number" />
-        <button
-          type="button"
-          onClick={() => {
-            addCode();
-          }}
-        >
+        <button type="button" onClick={addCode}>
           株追加
         </button>
       </div>

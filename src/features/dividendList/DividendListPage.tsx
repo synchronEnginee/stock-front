@@ -191,7 +191,7 @@ const DividendListPage = (props: Props) => {
     autoResetPageIndex,
     // Provide our updateData function to our table meta
     meta: {
-      updateData: (rowIndex, columnId, value) => {
+      updateData: (rowIndex: number, columnId: string, value: unknown) => {
         // Skip age index reset until after next rerender
         skipAutoResetPageIndex();
         setData((old) =>

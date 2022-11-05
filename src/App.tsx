@@ -2,12 +2,15 @@ import React from 'react';
 import './App.css';
 import ChakraStyleProvider from './provider/ui/ChakraStyleProvider';
 import RouterConfig from './router/RouterConfig';
+import QueryProvider from './provider/query/QueryProvider';
 
 const App = () => (
   <div className="App">
-    <ChakraStyleProvider>
-      <RouterConfig />
-    </ChakraStyleProvider>
+    <QueryProvider>
+      <ChakraStyleProvider>
+        <RouterConfig />
+      </ChakraStyleProvider>
+    </QueryProvider>
   </div>
 );
 

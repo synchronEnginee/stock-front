@@ -10,9 +10,7 @@ const useCodeList = (numberList: number[]) => {
   // 銘柄コードリスト追加
   const addCodeList = (input: number) => {
     if (!input) return;
-    setCodeList(
-      (prevCodeList) => new Set([...Array.from(prevCodeList), input]),
-    );
+    setCodeList(new Set([...Array.from(codeList), input]));
   };
   const removeCodeList = (input: number) => {
     setCodeList((prevCodeList) =>

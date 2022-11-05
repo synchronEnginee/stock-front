@@ -9,9 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
-import { fetchComparison } from '../api';
 import { ComparisonStockInfo } from '../type/type';
-import { useQuery } from 'react-query';
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
 
@@ -28,7 +26,7 @@ export type ComparisonChartProps = {
 
 // グラフ用の複数データ生成
 export const dataForChart = (stockDatas: ComparisonStockInfo[] | undefined) =>
-  stockDatas
+  stockDatas != null
     ? stockDatas.map((stockData) => {
         const color = randomColor();
         return {

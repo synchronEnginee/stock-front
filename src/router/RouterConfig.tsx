@@ -13,7 +13,7 @@ const RouterConfig = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="fallstock" element={<FallStockPage />} />
-            <Route path="page2" element={<ComparisonPage />} />
+            <Route path="compare" element={<ComparisonPage />} />
             <Route path="dividend-list" element={<DividendListPage />} />
           </Route>
           {/* <Route path="*" element={<NotFound />} /> */}

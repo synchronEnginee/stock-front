@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { fetchComparison } from '../api';
 import { useQuery } from 'react-query';
@@ -18,9 +18,11 @@ type ComparisonProps = {
  */
 const ComparisonStock = (props: ComparisonProps) => {
   const { codeList, isChart } = props;
-  const { data } = useQuery(['CompareStockInfo', codeList], fetchComparison);
+  const codeListArray = useMemo(() => Array.from(codeList), [codeList]);
+  const compareFetch = async () => await fetchComparison(codeListArray);
+  const { data } = useQuery(['CompareStockInfo', codeListArray], compareFetch);
   // データがない場合は早期リターン
-  if (!data) return null;
+  if (data == null) return null;
 
   return isChart ? (
     <ComparisonChart data={data} />
